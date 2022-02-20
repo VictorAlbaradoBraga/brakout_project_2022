@@ -98,7 +98,32 @@ while game_loop:
             player_x += 10
         if player_x >= 465:
             player_x = 465
-    
+    # ball collision
+    if ball_y >= 700:
+        ball_x = 250
+        ball_y = 450
+        ball_dy *= -1
+        ball_dx *= -1
+        ball_dx = 5
+        ball_dy = -5
+    if ball_y <= 10:
+        ball_dy *= -1
+    if ball_x >= 495:
+        ball_dx *= -1
+    if ball_x <= 10:
+        ball_dx *= -1
+    # ball collision with the paddle player
+    if player_y <= ball_y + 10 <= player_y + 10 and player_x <= ball_x <= player_x + 30:
+        if ball_dy > 0:
+            ball_dy *= -1
+    # ball collision with the bricks
+    for brick in bricks:
+        if (brick.x <= ball_x <= brick.x + brick.width) or (brick.x <= ball_x + ball_width <= brick.x + brick.width):
+            if (brick.y <= ball_y <= brick.y + brick.height) or (
+                    brick.y <= ball_y + ball_height <= brick.y + brick.height):
+                bricks.remove(brick)
+                ball_dy *= -1
+
     # ball movement
     ball_x += ball_dx
     ball_y += ball_dy
@@ -121,4 +146,3 @@ while game_loop:
     pygame.draw.rect(screen, COLOR_BLUE, pygame.Rect(495, 595, 10, 20))
     pygame.draw.rect(screen, COLOR_GREY, pygame.Rect(495, 615, 10, 700))
     pygame.display.update()
-
